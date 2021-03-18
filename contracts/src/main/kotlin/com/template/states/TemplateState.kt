@@ -8,7 +8,8 @@ import net.corda.core.identity.Party
 
 // *********
 // * State *
-// *********
+
+// State class implements the ContractState interface
 @BelongsToContract(TemplateContract::class)
 class IOUState(val value: Int,
                val lender: Party,

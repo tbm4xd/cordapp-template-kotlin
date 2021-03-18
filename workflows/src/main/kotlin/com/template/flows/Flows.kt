@@ -14,8 +14,10 @@ import net.corda.core.flows.FinalityFlow;
 // *********
 // * Flows *
 // *********
-@InitiatingFlow
-@StartableByRPC
+
+//All flows must subclass FlowLogic
+@InitiatingFlow // Means this flow is part of a flow pair and that it triggers the other side to run the counterparty flow (IOUFlowResponder)
+@StartableByRPC // Allows the node owner to start this flow via an RPC call
 class IOUFlow(val iouValue: Int,
               val otherParty: Party) : FlowLogic<Unit>() {
 
@@ -24,7 +26,7 @@ class IOUFlow(val iouValue: Int,
     override val progressTracker = ProgressTracker()
 
     /** The flow logic is encapsulated within the call() method. */
-    @Suspendable
+    @Suspendable // Allows the flow to be check-pointed and serialized to disk when it encounters a long-running operation, allowing your node to move on to running other flows
     override fun call() {
         // We retrieve the notary identity from the network map.
         val notary = serviceHub.networkMapCache.notaryIdentities[0]
